@@ -80,3 +80,62 @@ type BackTestResult struct {
 func (BackTestResult) TableName() string {
 	return "backtest_results"
 }
+
+// SimulatedTrade - 模拟交易记录
+type SimulatedTrade struct {
+	ID        uint   `gorm:"primaryKey" json:"id"`
+	SignalID  uint   `gorm:"index;not null" json:"signalId"` // 关联信号 ID
+	Symbol    string `gorm:"index;not null" json:"symbol"`
+	Side      string `gorm:"type:varchar(10);not null" json:"side"` // LONG/SHORT
+
+	// 入场信息
+	EntryPrice      float64   `gorm:"type:decimal(12,8);not null" json:"entryPrice"`
+	EntryTime       time.Time `gorm:"not null" json:"entryTime"`
+	PositionSize    float64   `gorm:"type:decimal(10,2);default:100" json:"positionSize"` // 仓位大小 (USDT)
+	Leverage        int       `gorm:"default:1" json:"leverage"`                          // 杠杆倍数
+
+	// 出场信息
+	ExitPrice       *float64   `gorm:"type:decimal(12,8)" json:"exitPrice"`
+	ExitTime        *time.Time `gorm:"index" json:"exitTime"`
+	ExitReason      string     `gorm:"type:varchar(50)" json:"exitReason"` // TAKE_PROFIT/STOP_LOSS/TIME_EXIT/MANUAL
+
+	// 止损止盈
+	StopLossPrice   float64 `gorm:"type:decimal(12,8)" json:"stopLossPrice"`
+	TakeProfitPrice float64 `gorm:"type:decimal(12,8)" json:"takeProfitPrice"`
+
+	// 盈亏计算
+	PnlPercent  float64  `gorm:"type:decimal(10,6)" json:"pnlPercent"`  // 盈亏百分比
+	PnlUSDT     float64  `gorm:"type:decimal(12,2)" json:"pnlUSDT"`     // 盈亏金额
+	MaxDrawdown float64  `gorm:"type:decimal(10,6)" json:"maxDrawdown"` // 最大回撤
+	MaxProfit   float64  `gorm:"type:decimal(10,6)" json:"maxProfit"`   // 最大浮盈
+
+	// 当前状态
+	IsActive      bool `gorm:"default:true;index" json:"isActive"` // 是否持仓中
+	CurrentPrice  float64 `gorm:"-" json:"currentPrice"`            // 当前价格 (虚拟字段)
+	UnrealizedPnl float64 `gorm:"-" json:"unrealizedPnl"`           // 未实现盈亏
+
+	CaptureTime time.Time `gorm:"autoCreateTime" json:"captureTime"`
+	UpdateTime  time.Time `gorm:"autoUpdateTime" json:"updateTime"`
+}
+
+func (SimulatedTrade) TableName() string {
+	return "simulated_trades"
+}
+
+// TradeStats - 交易统计
+type TradeStats struct {
+	TotalTrades       int     `json:"totalTrades"`        // 总交易次数
+	ActiveTrades      int     `json:"activeTrades"`       // 当前持仓
+	WiningTrades      int     `json:"winingTrades"`       // 盈利次数
+	LosingTrades      int     `json:"losingTrades"`       // 亏损次数
+	WinRate           float64 `json:"winRate"`            // 胜率
+	TotalPnlUSDT      float64 `json:"totalPnlUSDT"`       // 总盈亏
+	TotalPnlPercent   float64 `json:"totalPnlPercent"`    // 总盈亏百分比
+	AvgWinPercent     float64 `json:"avgWinPercent"`      // 平均盈利
+	AvgLossPercent    float64 `json:"avgLossPercent"`     // 平均亏损
+	ProfitFactor      float64 `json:"profitFactor"`       // 盈利因子
+	MaxConsecutiveWin int     `json:"maxConsecutiveWin"`  // 最大连胜
+	MaxConsecutiveLose int    `json:"maxConsecutiveLose"` // 最大连亏
+	BestTrade         float64 `json:"bestTrade"`          // 最佳交易
+	WorstTrade        float64 `json:"worstTrade"`         // 最差交易
+}

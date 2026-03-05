@@ -21,6 +21,7 @@ import (
 type FundingHandler struct {
 	DB          *gorm.DB
 	Ex          *binance.Exchange
+	TradeEngine *services.TradeEngine
 	lastMsgID   int
 	tickerCache sync.Map // key: symbol, value: *CacheEntry
 }
@@ -457,4 +458,40 @@ WITH ROLLUP
 	}
 
 	return results, nil
+}
+
+// GetTradeStats - 获取交易统计
+func (h *FundingHandler) GetTradeStats(c *gin.Context) {
+	stats, err := h.TradeEngine.GetTradeStats()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"stats": stats})
+}
+
+// GetActiveTrades - 获取当前持仓
+func (h *FundingHandler) GetActiveTrades(c *gin.Context) {
+	trades, err := h.TradeEngine.GetActiveTrades()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"trades": trades})
+}
+
+// GetTradeHistory - 获取交易历史
+func (h *FundingHandler) GetTradeHistory(c *gin.Context) {
+	limit := 50
+	if l := c.Query("limit"); l != "" {
+		if n, err := strconv.Atoi(l); err == nil {
+			limit = n
+		}
+	}
+	trades, err := h.TradeEngine.GetTradeHistory(limit)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"trades": trades})
 }
