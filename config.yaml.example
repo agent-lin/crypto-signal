@@ -1,0 +1,16 @@
+# Crypto Signal 配置文件示例
+# 复制此文件为 config.yaml 并填入真实配置
+
+# 是否随程序启动
+start_with_run: false
+
+# MySQL 数据库连接
+dsn: "user:password@unix(/var/run/mysqld/mysqld.sock)/database?charset=utf8mb4&parseTime=True&loc=Local"
+
+# Binance API 密钥
+api_key: "YOUR_BINANCE_API_KEY"
+secret_key: "YOUR_BINANCE_SECRET_KEY"
+
+# Telegram 通知（可选）
+telegram_bot_token: "YOUR_BOT_TOKEN"
+telegram_group_id: "YOUR_GROUP_ID"
