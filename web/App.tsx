@@ -9,7 +9,8 @@ import SettingsModal from './components/SettingsModal';
 import AccountView from './components/AccountView';
 import BacktestView from './components/BacktestView';
 import TradeModal from './components/TradeModal';
-import { AlertCircle, Filter } from 'lucide-react';
+import TradeView from './components/TradeView';
+import { AlertCircle, Filter, BarChart3 } from 'lucide-react';
 
 // Translation Dictionary
 const translations: Record<Language, Translations> = {
@@ -109,6 +110,7 @@ const translations: Record<Language, Translations> = {
     vol: "Vol",
     // Backtest
     backtest: "Backtest",
+    trades: "Trades",
     pnl4h: "4H PnL",
     pnl12h: "12H PnL",
     pnl24h: "24H PnL",
@@ -216,6 +218,7 @@ const translations: Record<Language, Translations> = {
     vol: "量",
     // Backtest
     backtest: "回测数据",
+    trades: "交易记录",
     pnl4h: "4H 盈亏",
     pnl12h: "12H 盈亏",
     pnl24h: "24H 盈亏",
@@ -351,7 +354,9 @@ const App: React.FC = () => {
           t={t}
         />
 
-        {currentView === 'signals' ? (
+        {currentView === 'trades' ? (
+          <TradeView apiUrl="http://localhost:8666" />
+        ) : currentView === 'signals' ? (
           <>
             <AIInsight signals={signals} lang={lang} t={t} />
 

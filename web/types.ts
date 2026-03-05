@@ -183,7 +183,7 @@ export enum SortOption {
 }
 
 export type Language = 'zh' | 'en';
-export type ViewMode = 'signals' | 'account' | 'backtest';
+export type ViewMode = 'signals' | 'account' | 'backtest' | 'trades';
 
 export interface Translations {
   trade: string;

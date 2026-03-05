@@ -90,6 +90,13 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               {t.backtest}
             </button>
             <button 
+              onClick={() => onNavigate('trades')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${currentView === 'trades' ? 'bg-white dark:bg-gray-800 text-primary shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+            >
+              <BarChart3 size={16} />
+              Trades
+            </button>
+            <button 
               onClick={() => onNavigate('account')}
               className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${currentView === 'account' ? 'bg-white dark:bg-gray-800 text-primary shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
             >
