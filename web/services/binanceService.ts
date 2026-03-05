@@ -1,44 +1,16 @@
 
 import { UserConfig, BinanceOrder, SignalRecord, BinanceAccountInfo, BinancePosition, BinanceAsset } from '../types';
+import CryptoJS from 'crypto-js';
 
-// Helper to convert string to buffer
-const str2ab = (str: string) => {
-  const buf = new ArrayBuffer(str.length);
-  const bufView = new Uint8Array(buf);
-  for (let i = 0, strLen = str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-  }
-  return buf;
-};
-
-// Helper to generate HMAC SHA256 Signature
+// Helper to generate HMAC SHA256 Signature using crypto-js
 const hmacSha256 = async (key: string, message: string): Promise<string> => {
   try {
-    // Try Web Crypto API first (modern browsers)
-    const crypto = window.crypto.subtle;
-    const keyObj = await crypto.importKey(
-      "raw",
-      str2ab(key),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-    
-    const signature = await crypto.sign(
-      "HMAC",
-      keyObj,
-      str2ab(message)
-    );
-    
-    // Convert ArrayBuffer to Hex String
-    return Array.from(new Uint8Array(signature))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+    // Use crypto-js for HMAC-SHA256 (works in all browsers)
+    const signature = CryptoJS.HmacSHA256(message, key);
+    return CryptoJS.enc.Hex.stringify(signature);
   } catch (error) {
-    console.warn('Web Crypto API failed, using fallback:', error);
-    // Fallback: Simple HMAC using external library or return empty
-    // For now, throw a more descriptive error
-    throw new Error('Crypto API not available. Please use HTTPS or a modern browser.');
+    console.error('HMAC signature failed:', error);
+    throw new Error('Failed to generate signature');
   }
 };
 
