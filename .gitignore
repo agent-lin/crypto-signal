@@ -1,0 +1,41 @@
+# 配置文件（包含敏感信息）
+config.yaml
+
+# 编译产物
+future-signal
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 依赖目录
+vendor/
+node_modules/
+
+# 构建输出
+dist/
+build/
+.next/
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE 配置
+.idea/
+.vscode/
+*.iml
+
+# 测试数据
+*.db
+*.sqlite

@@ -1,9 +1,10 @@
 
 import { SignalResponse, TickerResponse, BacktestResponse } from '../types';
 
-const API_URL = 'https://test-api-container-platform.titannet.io/api/funding/volume-surge';
-const TICKER_URL = 'https://test-api-container-platform.titannet.io/api/ticker/24h';
-const BACKTEST_URL = 'https://test-api-container-platform.titannet.io/api/funding/history';
+const API_BASE = 'http://localhost:8666/api';
+const API_URL = `${API_BASE}/funding/volume-surge`;
+const TICKER_URL = `${API_BASE}/ticker/24h`;
+const BACKTEST_URL = `${API_BASE}/funding/history`;
 
 export const fetchSignals = async (): Promise<SignalResponse> => {
   try {
