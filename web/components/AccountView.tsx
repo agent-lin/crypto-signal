@@ -16,7 +16,7 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
   const [error, setError] = useState<string | null>(null);
 
   const handleFetch = async () => {
-    if (!config.binanceApiKey) {
+    if (!config.binanceApiKey || !config.binanceApiSecret) {
       setError(t.loginRequired);
       return;
     }
@@ -27,6 +27,7 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
       const data = await fetchBinanceAccount(config);
       setAccountInfo(data);
     } catch (err: any) {
+      console.error('Account fetch error:', err);
       setError(err.message || t.apiError);
     } finally {
       setLoading(false);
@@ -34,10 +35,11 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
   };
 
   useEffect(() => {
-    if (config.binanceApiKey) {
+    // Only fetch if API keys are configured
+    if (config.binanceApiKey && config.binanceApiSecret) {
       handleFetch();
     }
-  }, [config]);
+  }, [config.binanceApiKey, config.binanceApiSecret]);
 
   if (!config.binanceApiKey) {
     return (
@@ -60,8 +62,9 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
   }
 
   // Format Helpers
-  const formatUSD = (val: string) => {
-    const num = parseFloat(val);
+  const formatUSD = (val: string | number | undefined | null) => {
+    if (val === undefined || val === null) return '$0.00';
+    const num = typeof val === 'string' ? parseFloat(val) : val;
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -69,7 +72,7 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
     }).format(num);
   };
 
-  const activePositions = accountInfo?.positions.filter(p => parseFloat(p.positionAmt) !== 0) || [];
+  const activePositions = accountInfo?.positions?.filter(p => parseFloat(p.positionAmt || '0') !== 0) || [];
 
   return (
     <div className="space-y-6">
@@ -110,10 +113,10 @@ const AccountView: React.FC<AccountViewProps> = ({ config, t, onOpenSettings }) 
                   <span>{t.walletBalance}</span>
                </div>
                <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {formatUSD(accountInfo.totalWalletBalance)}
+                  {formatUSD(accountInfo?.totalWalletBalance)}
                </div>
                <div className="text-sm text-gray-400 mt-1">
-                 {t.availableBalance}: <span className="text-gray-700 dark:text-gray-300 font-bold">{formatUSD(accountInfo.availableBalance)}</span>
+                 {t.availableBalance}: <span className="text-gray-700 dark:text-gray-300 font-bold">{formatUSD(accountInfo?.availableBalance)}</span>
                </div>
             </div>
 

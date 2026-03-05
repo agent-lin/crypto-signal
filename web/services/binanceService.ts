@@ -11,27 +11,35 @@ const str2ab = (str: string) => {
   return buf;
 };
 
-// Helper to generate HMAC SHA256 Signature using Web Crypto API
+// Helper to generate HMAC SHA256 Signature
 const hmacSha256 = async (key: string, message: string): Promise<string> => {
-  const crypto = window.crypto.subtle;
-  const keyObj = await crypto.importKey(
-    "raw",
-    str2ab(key),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  
-  const signature = await crypto.sign(
-    "HMAC",
-    keyObj,
-    str2ab(message)
-  );
-  
-  // Convert ArrayBuffer to Hex String
-  return Array.from(new Uint8Array(signature))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+  try {
+    // Try Web Crypto API first (modern browsers)
+    const crypto = window.crypto.subtle;
+    const keyObj = await crypto.importKey(
+      "raw",
+      str2ab(key),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    
+    const signature = await crypto.sign(
+      "HMAC",
+      keyObj,
+      str2ab(message)
+    );
+    
+    // Convert ArrayBuffer to Hex String
+    return Array.from(new Uint8Array(signature))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  } catch (error) {
+    console.warn('Web Crypto API failed, using fallback:', error);
+    // Fallback: Simple HMAC using external library or return empty
+    // For now, throw a more descriptive error
+    throw new Error('Crypto API not available. Please use HTTPS or a modern browser.');
+  }
 };
 
 interface SymbolFilter {
