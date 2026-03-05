@@ -22,12 +22,18 @@ type Exchange struct {
 	ID            string
 	FuturesClient *futures.Client
 	counter       int
+	TradeEngine   interface{} // *services.TradeEngine
 }
 
 func NewBinanceExchange(apiKey, secretKey string) *Exchange {
 	return &Exchange{
 		FuturesClient: binance.NewFuturesClient(apiKey, secretKey),
+		TradeEngine:   nil,
 	}
+}
+
+func (m *Exchange) SetTradeEngine(tradeEngine interface{}) {
+	m.TradeEngine = tradeEngine
 }
 
 func (m *Exchange) MonitorMarketFundingRate(db *gorm.DB) bool {
@@ -81,6 +87,15 @@ func (m *Exchange) MonitorMarketFundingRate(db *gorm.DB) bool {
 			// 执行模拟买入
 			fmt.Printf("📈 [模拟开仓] %s %s @ %.4f | 止损：%.4f | 止盈：%.4f\n",
 				signal.Symbol, signal.Side, signal.Price, signal.StopLoss, signal.TakeProfit)
+			
+			// 调用交易引擎执行买入
+			if m.TradeEngine != nil {
+				if engine, ok := m.TradeEngine.(interface{ ExecuteBuy(*models.FundingRateRecord) error }); ok {
+					if err := engine.ExecuteBuy(signal); err != nil {
+						log.Printf("ExecuteBuy error %s: %v", signal.Symbol, err)
+					}
+				}
+			}
 		}
 
 		limit++

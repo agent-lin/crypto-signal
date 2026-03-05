@@ -55,6 +55,9 @@ func main() {
 
 	exchange := binance.NewBinanceExchange(cfg.APIKey, cfg.SecretKey)
 	tradeEngine := services.NewTradeEngine(db)
+	
+	// 设置交易引擎到 exchange
+	exchange.SetTradeEngine(tradeEngine)
 
 	handler := &handlers.FundingHandler{DB: db, Ex: exchange, TradeEngine: tradeEngine}
 	r.GET("/api/funding/latest", handler.GetLatestRecords)
