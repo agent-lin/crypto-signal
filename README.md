@@ -89,34 +89,58 @@ go build -o crypto-signal .
 
 服务启动后访问 `http://localhost:8666`
 
-### 获取最新资金费率
+### 市场数据
+
+#### 获取最新资金费率
 
 ```bash
 curl http://localhost:8666/api/funding/latest
 ```
 
-### 获取成交量激增
+#### 获取成交量激增
 
 ```bash
 curl http://localhost:8666/api/funding/volume-surge
 ```
 
-### 获取 24h 行情
+#### 获取 24h 行情
 
 ```bash
 curl "http://localhost:8666/api/ticker/24h?symbol=BTCUSDT"
 ```
 
-### 获取历史数据
+### 模拟交易
+
+#### 获取交易统计
 
 ```bash
-curl "http://localhost:8666/api/funding/history?page=1&pageSize=20"
+curl http://localhost:8666/api/trades/stats
 ```
 
-### 获取统计数据
+响应示例：
+```json
+{
+  "stats": {
+    "totalTrades": 15,
+    "winingTrades": 10,
+    "losingTrades": 5,
+    "winRate": 66.67,
+    "totalPnlUSDT": 128.50,
+    "profitFactor": 2.35
+  }
+}
+```
+
+#### 获取当前持仓
 
 ```bash
-curl http://localhost:8666/api/funding/stats
+curl http://localhost:8666/api/trades/active
+```
+
+#### 获取交易历史
+
+```bash
+curl "http://localhost:8666/api/trades/history?limit=50"
 ```
 
 ---
