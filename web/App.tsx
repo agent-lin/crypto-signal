@@ -110,7 +110,7 @@ const translations: Record<Language, Translations> = {
     vol: "Vol",
     // Backtest
     backtest: "Backtest",
-    trades: "Trades",
+    trades: "Trading",
     pnl4h: "4H PnL",
     pnl12h: "12H PnL",
     pnl24h: "24H PnL",
@@ -355,7 +355,7 @@ const App: React.FC = () => {
         />
 
         {currentView === 'trades' ? (
-          <TradeView apiUrl="http://localhost:8666" />
+          <TradeView apiUrl="" lang={lang} />
         ) : currentView === 'signals' ? (
           <>
             <AIInsight signals={signals} lang={lang} t={t} />
