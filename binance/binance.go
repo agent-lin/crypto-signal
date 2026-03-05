@@ -70,7 +70,8 @@ func (m *Exchange) MonitorMarketFundingRate(db *gorm.DB) bool {
 		//}
 
 		currentPrice, _ := strconv.ParseFloat(rateInfo.MarkPrice, 64)
-		signal, err := m.RunDayTradingAnalysisV2(db, rateInfo.Symbol, rateInfo.Rate, currentPrice)
+		// 使用优化策略
+		signal, err := m.OptimizedStrategy(db, rateInfo.Symbol, rateInfo.Rate, currentPrice)
 		if err != nil {
 			log.Printf("analysis error %s: %v\n", rateInfo.Symbol, err)
 		}
