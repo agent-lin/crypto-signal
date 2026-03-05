@@ -1,0 +1,8 @@
+start_with_run: false
+
+dsn: "root:1234@/future-monitor?charset=utf8mb4&parseTime=True&loc=Local"
+api_key: "JBTG5V4cFn729J3ENhDyOiWmevxbnOdrNl59s8PylVfJdJGMQcyChJtbsUcqulUW"
+secret_key: "a1UxzBhHGA1EmRdqZ0WwYcO4goM7Py52oqEAyDlqePrnYUCCzTL8x7mkEyjx9iTk"
+
+telegram_bot_token: "8112130036:AAFpPrHnkNhKlUs98__-LJaVX0xPS-rYjeM"
+telegram_group_id: "-5050174389"

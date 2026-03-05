@@ -1,0 +1,5 @@
+{
+  "name": "TitanSignal AI",
+  "description": "A real-time crypto signal dashboard utilizing volume surge and funding rate anomalies, powered by Gemini AI for market analysis.",
+  "requestFramePermissions": []
+}
