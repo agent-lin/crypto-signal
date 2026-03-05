@@ -54,8 +54,3 @@ require (
 	golang.org/x/tools v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
 )
-
-replace (
-	github.com/adshao/go-binance/v2 => ../go-binance/v2
-	github.com/adshao/go-binance/v2/futures => ../go-binance/v2/futures
-)

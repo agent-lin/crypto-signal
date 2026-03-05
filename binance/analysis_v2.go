@@ -132,12 +132,12 @@ func (m *Exchange) RunDayTradingAnalysisV2(db *gorm.DB, symbol string, currentFu
 	if err == nil && len(oiHistory) >= 6 {
 		oiLast := oiHistory[len(oiHistory)-1]
 		oiCurrent, _ := decimal.NewFromString(oiLast.SumOpenInterestValue)
-		supply, _ := decimal.NewFromString(oiLast.CMCCirculatingSupply)
+		// supply, _ := decimal.NewFromString(oiLast.CMCCirculatingSupply)
 
-		if !supply.IsZero() {
-			marketCap = prices15m[idx15].Mul(supply)
-			oiToMcRatio = oiCurrent.Div(marketCap)
-		}
+		// if !supply.IsZero() {
+		// 	marketCap = prices15m[idx15].Mul(supply)
+		// 	oiToMcRatio = oiCurrent.Div(marketCap)
+		// }
 
 		// 判断控盘度 > 0.5
 		if oiToMcRatio.GreaterThan(decimal.NewFromFloat(0.5)) {

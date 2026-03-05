@@ -246,7 +246,7 @@ func (m *Exchange) RunDayTradingAnalysis(db *gorm.DB, symbol string, currentFund
 	oiIndex6, _ := decimal.NewFromString(oiHistory[6].SumOpenInterestValue)
 	oiIndex7, _ := decimal.NewFromString(oiHistory[7].SumOpenInterestValue)
 
-	oiCurrent, _ := decimal.NewFromString(oiHistory[len(oiHistory)-1].SumOpenInterestValue)
+	// oiCurrent, _ := decimal.NewFromString(oiHistory[len(oiHistory)-1].SumOpenInterestValue)
 	//oiPrev, _ := decimal.NewFromString(oiHistory[len(oiHistory)-2].SumOpenInterest)
 
 	// 计算 OI 变化百分比
@@ -268,15 +268,15 @@ func (m *Exchange) RunDayTradingAnalysis(db *gorm.DB, symbol string, currentFund
 		return nil, nil
 	}
 
-	// 计算 OI/MC 比率 (庄家控盘度)
+	// 计算 OI/MC 比率 (庄家控盘度) - 暂时禁用，币安 API 无此字段
 	marketCap := decimal.Zero
 	oiToMcRatio := decimal.Zero
 
-	supply, _ := decimal.NewFromString(oiHistory[len(oiHistory)-1].CMCCirculatingSupply)
-	if !supply.IsZero() {
-		marketCap = prices[idx].Mul(supply) // 现价 * 流通量 = 市值
-		oiToMcRatio = oiCurrent.Div(marketCap)
-	}
+	// supply, _ := decimal.NewFromString(oiHistory[len(oiHistory)-1].CMCCirculatingSupply)
+	// if !supply.IsZero() {
+	// 	marketCap = prices[idx].Mul(supply) // 现价 * 流通量 = 市值
+	// 	oiToMcRatio = oiCurrent.Div(marketCap)
+	// }
 
 	// ------------------------------------------------------
 	// 第三步：结合【资金费率】定性 (Funding Rate)
