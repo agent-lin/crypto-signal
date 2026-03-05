@@ -2,7 +2,7 @@ package binance
 
 import (
 	"fmt"
-	"future-signal/config"
+	"crypto-signal/config"
 	"github.com/adshao/go-binance/v2"
 	"log"
 	"testing"

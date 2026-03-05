@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"future-signal/models"
+	"crypto-signal/models"
 	"net/http"
 	"strings"
 	"time"

@@ -1,4 +1,4 @@
-module future-signal
+module crypto-signal
 
 go 1.24.6
 

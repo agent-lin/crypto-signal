@@ -4,16 +4,16 @@ package handlers
 import (
 	"errors"
 	"fmt"
-	"future-signal/binance"
-	"future-signal/services"
-	"future-signal/types"
+	"crypto-signal/binance"
+	"crypto-signal/services"
+	"crypto-signal/types"
 	"log"
 	"net/http"
 	"strconv"
 	"sync"
 	"time"
 
-	"future-signal/models"
+	"crypto-signal/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

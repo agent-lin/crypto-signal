@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"future-signal/binance"
-	"future-signal/config"
-	"future-signal/handlers"
-	"future-signal/models"
+	"crypto-signal/binance"
+	"crypto-signal/config"
+	"crypto-signal/handlers"
+	"crypto-signal/models"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"

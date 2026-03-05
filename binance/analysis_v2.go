@@ -2,8 +2,8 @@ package binance
 
 import (
 	"fmt"
-	"future-signal/models"
-	"future-signal/services"
+	"crypto-signal/models"
+	"crypto-signal/services"
 	"time"
 
 	"github.com/shopspring/decimal"

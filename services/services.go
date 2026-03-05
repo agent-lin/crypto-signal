@@ -2,7 +2,7 @@
 package services
 
 import (
-	"future-signal/models"
+	"crypto-signal/models"
 	"gorm.io/gorm"
 	"time"
 )
